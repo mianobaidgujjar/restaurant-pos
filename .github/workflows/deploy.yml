@@ -1,15 +1,7 @@
- name: Build and Deploy Restaurant POS
-
+name: Build and Deploy Restaurant POS
   on:
     push:
-      branches:
-        - main
-    workflow_dispatch: # Optional: allows manual runs
-
-  permissions:
-    pages: write
-    contents: read
-    id-token: write
+      branches: [ main ]
 
   jobs:
     build-deploy:
@@ -18,23 +10,21 @@
         - name: Checkout code
           uses: actions/checkout@v4
 
-        - name: Set up Node.js
+        - name: Setup Node.js
           uses: actions/setup-node@v4
           with:
             node-version: '20.x'
-            cache: 'pnpm'
 
         - name: Install dependencies
-          run: pnpm install
+          run: npm ci
 
         - name: Build with Vite
-          run: pnpm run build
+          run: npm run build
 
         - name: Upload artifact
           uses: actions/upload-pages-artifact@v3
           with:
-            path: dist
+            path: ./dist
 
         - name: Deploy to GitHub Pages
-          id: deployment
           uses: actions/deploy-pages@v4
